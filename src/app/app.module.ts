@@ -8,20 +8,28 @@ import { GameComponent } from './game/game.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {AppMaterialModule} from "./app-material.module";
+import {StoreModule} from "@ngrx/store";
+import {counterReducer} from "./store/counter.reducer";
+import {IMaskModule} from "angular-imask";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ScoreTableComponent} from "./score-table/score-table.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
     GameComponent,
-
+    ScoreTableComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    AppMaterialModule
+    AppMaterialModule,
+    IMaskModule,
+    BrowserAnimationsModule,
+    StoreModule.forRoot({ counter: counterReducer })
   ],
   providers: [],
   bootstrap: [AppComponent]

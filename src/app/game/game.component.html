@@ -1,1 +1,62 @@
-<mat-card><mat-card-title>aababa</mat-card-title>aaaaaa</mat-card>
+<div class="vh-100">
+  <span class="card d-flex flex-row justify-content-center">
+    <mat-card class="mt-4 w-50">
+      <form [formGroup]="formGroup">
+        <mat-card-title class="mb-3">
+          Twój wynik: {{ score$ | async }}
+        </mat-card-title>
+        <div class="d-flex flex-row justify-content-center">
+          <div *ngIf="isFirstControlValueGreaterThanNine()" class="my-3">
+            Zdobyłeś maksymalną liczbę punktów nie możesz ponownie rzucać
+          </div>
+          <div>
+            <mat-form-field class="col" appearance="outline">
+              <mat-label class="w-100">Pierwszy rzut</mat-label>
+              <input
+                [maxLength]="2"
+                matInput
+                formControlName="first"
+                [imask]="numberMask"
+                [unmask]="'typed'"
+              />
+              <mat-error *ngIf="formGroup?.hasError('required')"
+                >Pole nie może być puste</mat-error
+              >
+            </mat-form-field>
+            <mat-form-field class="col" appearance="outline">
+              <mat-label class="w-100">Drugi rzut</mat-label>
+              <input
+                [readonly]="isFirstControlValueGreaterThanNine()"
+                [maxLength]="2"
+                matInput
+                formControlName="second"
+                [imask]="numberMask"
+                [unmask]="'typed'"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="d-flex flex-row justify-content-end gap-2">
+          <div *ngIf="!this.formGroup.controls.second.valid">
+            W drugim rzucie możesz uzyskać maksymalnie {{ validator }}
+          </div>
+          <button
+            mat-raised-button
+            (click)="addRow()"
+            [disabled]="!formGroup.valid || canAdd()"
+          >
+            Dodaj kolejkę
+          </button>
+          <button mat-raised-button (click)="clear()">Wyczyść tablice</button>
+        </div>
+      </form>
+    </mat-card>
+  </span>
+
+  <div *ngIf="!!frames?.length; else noData">
+    <app-score-table [scoreData]="frames?.getRawValue()"></app-score-table>
+  </div>
+</div>
+<ng-template #noData>
+  <div>Brak wyników</div>
+</ng-template>
